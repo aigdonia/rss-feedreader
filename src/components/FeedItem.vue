@@ -1,7 +1,7 @@
 <template lang='pug'>
 router-link.FeedList__Item(:to='"/feed/"+item.uid',active-class="FeedList__Item--current", :title='item.name')
   span {{item.name}}
-  a.deleteItem(@click='deleteItem')
+  a.deleteItem(@click.prevent='deleteItem')
     i.fa.fa-close
 </template>
 
@@ -14,6 +14,14 @@ router-link.FeedList__Item(:to='"/feed/"+item.uid',active-class="FeedList__Item-
       deleteItem () {
         if (confirm('Delete Feed "' + this.item.name + '"?')) {
           this.$store.commit('removeFeed', this.item.url)
+          // route to another feed after the current one is deleted
+          var nextFeed = this.$store.state.feeds[0]
+          console.log(nextFeed)
+          if (nextFeed) {
+            this.$router.push('/feed/' + nextFeed.uid)
+          } else {
+            this.$router.push('/')
+          }
         }
       }
     }

@@ -38,8 +38,12 @@
           name: this.feedName,
           url: this.feedURL
         }
-        // insert the new object to feeds array stored at localstorage
-        this.$store.commit('addFeed', newFeed)
+        if (!this.$store.state.feeds.some(f => f.url === newFeed.url)) {
+          // insert the new object to feeds array stored at localstorage
+          this.$store.commit('addFeed', newFeed)
+        } else {
+          alert('This Feed URL already exist')
+        }
 
         // once every thing done successfully, reset the values of state values.
         this.feedName = ''

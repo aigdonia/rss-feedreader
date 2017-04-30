@@ -1,16 +1,16 @@
 <template lang='pug'>
   .FeedPane
-    .FeedPane__loader(v-if='articles.length <= 0')
+    .FeedPane__error(v-if='!! error')
+      h1.bigMan Can't Fetch this feed
+    .FeedPane__loader(v-else-if='articles.length <= 0')
       grid-loader(loading=true, color="#FBC02D", size="20px")
-
-    .FeedPane__error(v-else-if='!!error')
-      h1 Can't Fetch this feed
 
     .FeedPane__list(v-else)
       h1 {{feed.name}}
       .articles
         .article(v-for='article in articles')
-          img(v-if='!!article.image.url' v-lazy='article.image.url')
+          a(:href='article.link' target='_blank')
+            img(v-if='!!article.image.url' v-lazy='article.image.url')
           .article__details
             a(:href='article.link' target='_blank') {{ article.title }}
             p(v-html='article.summary')

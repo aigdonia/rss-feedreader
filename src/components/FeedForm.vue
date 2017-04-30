@@ -8,7 +8,7 @@
       input(type='text', v-model='feedName')
     .form-group
       label Feed URL:
-      input(type='text', v-model='feedURL', style='width:350px')
+      input(type='text', v-model='feedURL', style='width:350px', placeholder='http(s)://...')
     .button-group
       button(v-bind:disabled='!allowAddFeed', v-on:click='newFeed') Add Feed
 
@@ -26,8 +26,8 @@
     computed: {
       // check if both Feed Name and Feed URL got values
       allowAddFeed () {
-        // the double dong (!!) makes sure the value will be always boolean
-        return !!(this.feedURL.length && this.feedName.length)
+        // the double dong (!!) makes sure the value will be always boolean, check that both got values, and the url starts with (http) !!weak check!!
+        return !!((this.feedURL.length && this.feedName.length) && this.feedURL.startsWith('http'))
       }
     },
     methods: {
@@ -38,7 +38,6 @@
           name: this.feedName,
           url: this.feedURL
         }
-        console.log(newFeed)
         // insert the new object to feeds array stored at localstorage
         this.$store.commit('addFeed', newFeed)
 
